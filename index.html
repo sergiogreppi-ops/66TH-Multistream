@@ -3,416 +3,292 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>66TH · Live</title>
+<title>66th Ocean Drive · Live</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;700&family=Dancing+Script:wght@700&display=swap');
 
   :root {
     --blue:   #00cfff;
     --dark:   #060809;
     --surface:#0d1015;
-    --border: #161d26;
-    --text:   #4a6070;
-    --ch:     20px;
+    --border: #1d262f;
+    --text:   #5c7a8f;
+    --red-pastel: #ffb3b3;
+    --red-hover: #ff9999;
   }
 
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--dark); font-family:'Rajdhani',sans-serif; height:100vh; overflow:hidden; }
-
-  /* ── Intro ── */
-  #intro {
-    position:fixed; inset:0; background:var(--dark);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
-    z-index:1000; animation:introOut 0.5s ease 1s forwards;
-  }
-  @keyframes introOut { to { opacity:0; pointer-events:none; } }
-  .intro-logo {
-    font-family:'Orbitron',sans-serif; font-size:3.5rem; font-weight:900;
-    color:var(--blue); letter-spacing:0.2em;
-    text-shadow:0 0 40px rgba(0,207,255,0.5), 0 0 100px rgba(0,207,255,0.15);
-    animation:introIn 0.6s cubic-bezier(0.16,1,0.3,1);
-  }
-  @keyframes introIn { from{opacity:0;transform:scale(0.85) translateY(10px)} to{opacity:1;transform:none} }
-  .intro-sub { font-family:'Orbitron',sans-serif; font-size:0.55rem; letter-spacing:0.45em; color:#1a2a35; text-transform:uppercase; }
+  body { background:var(--dark); font-family:'Rajdhani',sans-serif; height:100vh; overflow:hidden; display: flex; flex-direction: column; }
 
   /* ── Header ── */
   #header {
     height:38px; display:flex; align-items:center;
-    padding:0 14px; gap:0;
-    background:var(--surface); border-bottom:1px solid var(--border);
+    padding:0 18px; background:var(--surface); border-bottom:1px solid var(--border);
+    flex-shrink: 0; z-index: 500;
   }
   .h-logo {
-    font-family:'Orbitron',sans-serif; font-size:0.85rem; font-weight:900;
-    color:var(--blue); letter-spacing:0.18em;
-    text-shadow:0 0 12px rgba(0,207,255,0.3);
-    padding-right:14px; border-right:1px solid var(--border);
-    flex-shrink:0;
+    font-family: 'Dancing Script', cursive; font-size: 1.2rem;
+    color: var(--blue); margin-right: 20px;
   }
-  .h-right { display:flex; align-items:center; gap:0; margin-left:auto; }
-  .h-sep { width:1px; height:20px; background:var(--border); margin:0 2px; flex-shrink:0; }
+  
+  .h-right { display:flex; align-items:center; gap:15px; margin-left:auto; }
 
-  .h-pill {
-    display:flex; align-items:center; gap:6px;
-    padding:0 12px; height:38px; cursor:default;
+  .h-add-box {
+    display: flex; align-items: center; background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px;
   }
-  .h-lbl { font-family:'Orbitron',sans-serif; font-size:0.5rem; letter-spacing:0.12em; color:#1e2e38; text-transform:uppercase; }
-  .h-val { font-family:'Orbitron',sans-serif; font-size:0.78rem; color:#ff3355; }
+  .h-add-box input {
+    background: transparent; border: none; color: var(--blue);
+    font-family: 'Rajdhani', sans-serif; font-size: 0.7rem; outline: none; width: 100px;
+  }
+  .h-add-box input::placeholder { color: var(--text); opacity: 0.6; }
+  .h-add-box button {
+    background: transparent; border: none; color: var(--text); cursor: pointer; font-size: 0.8rem; margin-left: 5px;
+  }
+
+  .h-pill { display:flex; align-items:center; gap:8px; }
+  .h-lbl { font-family:'Orbitron',sans-serif; font-size:0.5rem; color:var(--text); text-transform:uppercase; letter-spacing: 0.1em; }
+  .h-val { font-family:'Orbitron',sans-serif; font-size:0.75rem; color:#ff3355; font-weight: 900; }
 
   .hbtn {
-    height:24px; padding:0 10px;
-    background:none; border:1px solid var(--border); border-radius:5px;
-    color:var(--text); font-family:'Rajdhani',sans-serif; font-size:0.65rem;
-    letter-spacing:0.06em; text-transform:uppercase; cursor:pointer;
-    display:inline-flex; align-items:center; gap:4px;
-    transition:all 0.18s; white-space:nowrap; flex-shrink:0;
+    padding: 4px 10px; background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:4px;
+    color:var(--text); font-family:'Orbitron',sans-serif; font-size:0.55rem;
+    text-transform:uppercase; cursor:pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
   }
   .hbtn:hover { color:var(--blue); border-color:var(--blue); }
 
-  /* ── States ── */
-  #sLoading, #sOffline {
-    position:fixed; top:38px; left:0; right:0; bottom:0;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
-  }
-  #sOffline { display:none; }
-  .spinner { width:28px; height:28px; border:2px solid var(--border); border-top-color:var(--blue); border-radius:50%; animation:spin 0.8s linear infinite; }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .s-text { font-family:'Orbitron',sans-serif; font-size:0.54rem; letter-spacing:0.28em; color:#1a2530; text-transform:uppercase; }
-  .off-icon { font-size:2rem; opacity:0.08; }
-  .off-title { font-family:'Orbitron',sans-serif; font-size:0.8rem; letter-spacing:0.2em; color:#1a2530; }
-  .off-sub { font-size:0.68rem; color:#111820; }
+  /* ── Layout ── */
+  #main-container { display: flex; flex: 1; overflow: hidden; position: relative; }
+  #sGrid { flex: 1; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; padding: 10px; gap: 8px; }
 
-  /* ── Grid ── */
-  #sGrid {
-    position:fixed; top:38px; left:0; right:0; bottom:0;
-    display:none;
-    align-items:center; justify-content:center;
-    /* layout calculado por JS */
+  /* ── Sidebar Chat ── */
+  #sidebar {
+    width: 0; background: var(--surface); border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; transition: width 0.3s ease; overflow: hidden;
   }
-  /* Grid — layout calculado dinámicamente por JS */
-  #sGrid { display:grid; align-items:center; justify-items:center; }
-
-  /* ── Cell ── */
-  .cell {
-    display:flex; flex-direction:column;
-    background:var(--surface); border:1px solid var(--border); border-radius:5px;
-    overflow:hidden;
-    transition:border-color 0.15s;
-    /* Tamaño calculado por JS para ajustar exactamente al video 16:9 */
-    width:100%; height:100%;
+  #sidebar.open { width: 320px; }
+  .side-head { padding: 10px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+  .side-select {
+    background: #111820; border: 1px solid var(--border); color: var(--blue);
+    font-family: 'Orbitron', sans-serif; font-size: 0.6rem; padding: 4px; border-radius: 4px; outline: none;
   }
-  .cell.hidden   { display:none !important; }
-  .cell.drag-src { opacity:0.35; }
-  .cell.drag-ovr { border-color:var(--blue); box-shadow:0 0 10px rgba(0,207,255,0.18); }
+  .side-content { flex: 1; background: #000; }
+  .side-content iframe { width: 100%; height: 100%; border: none; }
 
-  /* Cell header — always visible, outside iframe */
+  /* ── Celdas ── */
+  .cell { position: relative; background:#000; border:1px solid var(--border); border-radius:4px; overflow:hidden; aspect-ratio: 16/9; }
+  .cell.hidden { display:none !important; }
   .ch {
-    height:var(--ch); flex-shrink:0;
-    display:flex; align-items:center; gap:4px;
-    padding:0 5px;
-    background:#090c0f; border-top:1px solid var(--border);
+    position: absolute; top: 0; left: 0; right: 0; height: 35px;
+    display: flex; align-items: flex-start; justify-content: flex-end;
+    padding: 8px; z-index: 10; opacity: 0; transition: opacity 0.3s;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
   }
-  .ch-drag {
-    cursor:grab; color:#1e2e38; font-size:0.7rem;
-    padding:0 2px; user-select:none; flex-shrink:0;
-    transition:color 0.15s;
-  }
-  .ch-drag:hover { color:#5a7a8a; }
-  .ch-name {
-    font-family:'Orbitron',sans-serif; font-size:0.46rem;
-    letter-spacing:0.1em; color:#2a4050; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
+  .cell:hover .ch { opacity: 1; }
   .ch-btn {
-    height:16px; min-width:16px; padding:0 4px;
-    background:none; border:1px solid #161d26; border-radius:4px;
-    color:#2a4050; font-family:'Rajdhani',sans-serif; font-size:0.62rem;
-    cursor:pointer; display:flex; align-items:center; justify-content:center;
-    transition:all 0.15s; flex-shrink:0; white-space:nowrap; gap:3px;
-  }
-  .ch-btn:hover { color:var(--blue); border-color:var(--blue); }
-  .ch-btn.red:hover { color:#ff4455; border-color:#ff2244; }
-  .ch-live {
-    width:6px; height:6px; border-radius:50%;
-    background:#ff3355; box-shadow:0 0 5px #ff3355;
-    flex-shrink:0; animation:lp 2s infinite;
-  }
-  @keyframes lp { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-  /* Cell player */
-  .cp {
-    flex:1; position:relative; min-height:0; background:#000;
-  }
-  .cp iframe {
-    position:absolute; inset:0;
-    width:100%; height:100%; border:none; display:block;
+    background: var(--red-pastel); border: none; color: #612c2c;
+    width: 18px; height: 18px; border-radius: 3px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.7rem;
   }
 
-  /* Hidden dropdown */
+  .cp { width: 100%; height: 100%; }
+  .cp iframe { width: 100%; height: 100%; border: none; }
+
   #hiddenDrop {
-    position:fixed; top:38px; right:8px;
-    background:var(--surface); border:1px solid var(--border); border-radius:7px;
-    z-index:400; display:none; min-width:155px; overflow:hidden;
-    box-shadow:0 6px 24px rgba(0,0,0,0.7);
+    position:fixed; top:42px; right:140px; background:var(--surface);
+    border:1px solid var(--border); border-radius:6px; z-index:600;
+    display:none; min-width:160px; box-shadow:0 10px 40px rgba(0,0,0,0.9);
   }
-  .hd-row {
-    display:flex; align-items:center; gap:8px;
-    padding:7px 11px; border-bottom:1px solid var(--border);
-    cursor:pointer; transition:background 0.12s;
+  .hd-row { 
+    padding:6px 12px; border-bottom:1px solid rgba(255,255,255,0.02); 
+    cursor:pointer; display:flex; justify-content:space-between; align-items:center;
   }
-  .hd-row:last-child { border-bottom:none; }
-  .hd-row:hover { background:#111820; }
-  .hd-name { font-family:'Orbitron',sans-serif; font-size:0.54rem; letter-spacing:0.08em; color:#aaa; }
+  .hd-row:hover { background: #161d26; }
+  .hd-name { font-family:'Orbitron',sans-serif; font-size:0.55rem; color:#777; letter-spacing: 0.05em; }
 </style>
 </head>
 <body>
 
-<!-- Intro -->
-<div id="intro">
-  <div class="intro-logo">66TH</div>
-  <div class="intro-sub">Live · Roleplay · GTA V</div>
-</div>
-
-<!-- Header -->
 <div id="header">
-  <div class="h-logo">66TH</div>
+  <div class="h-logo">66th Ocean Drive</div>
+  
   <div class="h-right">
     <div class="h-pill">
       <span class="h-lbl">En vivo</span>
-      <span class="h-val" id="liveNum">—</span>
+      <span class="h-val" id="liveNum">0</span>
     </div>
-    <div class="h-sep"></div>
-    <div class="h-pill" style="gap:6px">
-      <button class="hbtn" id="hiddenBtn" style="display:none" onclick="toggleHiddenDrop()">
-        👁 <span id="hiddenCount">0</span>
-      </button>
-      <button class="hbtn" onclick="refresh()">↺ Actualizar</button>
+
+    <button class="hbtn" id="hiddenBtn" style="display:none; border-color: rgba(0,207,255,0.2);" onclick="toggleHiddenDrop()">
+      Ocultos &nbsp; &nbsp; <span id="hiddenCount" style="color:var(--blue)">0</span>
+    </button>
+
+    <div class="h-add-box">
+      <input type="text" id="addInput" placeholder="Agregar canal" onkeypress="if(event.key==='Enter') addStream()">
+      <button onclick="addStream()">+</button>
     </div>
+
+    <button class="hbtn" onclick="toggleFullscreen()" title="Pantalla Completa">⛶</button>
+    <button class="hbtn" onclick="refresh()">↺</button>
+    <button class="hbtn" onclick="toggleChat()" style="background: rgba(0,207,255,0.08); border-color: var(--blue); color: var(--blue);">CHAT</button>
   </div>
 </div>
 
-<!-- States -->
-<div id="sLoading">
-  <div class="spinner"></div>
-  <div class="s-text" id="sLoadingText">Chequeando quién está en vivo…</div>
+<div id="main-container">
+  <div id="sGrid"></div>
+  
+  <div id="sidebar">
+    <div class="side-head">
+      <span class="h-lbl">Selector de Chat</span>
+      <select id="chatSelect" class="side-select" onchange="loadChat(this.value)"></select>
+    </div>
+    <div class="side-content" id="chatFrame"></div>
+  </div>
 </div>
-<div id="sOffline">
-  <div class="off-icon">📡</div>
-  <div class="off-title">Nadie está en vivo</div>
-  <div class="off-sub">Volvé en un rato</div>
-</div>
-<div id="sGrid"></div>
+
 <div id="hiddenDrop"></div>
 
 <script>
-const CHANNELS = [
-  'fulve','khandbl','lichxg','srtavodka','pakito0o0','kukitow',
-  'janter','vodkaah','bricenhox','polli','lukitasgg','rodrizs1',
-  'marianno181','claraleans','mgl-3113','cobraadlzr','elcharlito',
-  'nanuchoo','sic0-o','zetauno','wizzyts','fackens','nahu8928',
-  'srmomex','llicha','leyespa','nosoygomy'
-];
-const SERVER   = 'https://66th-multistream.vercel.app';
-
-let liveData  = [];
+let CHANNELS = ['fulve','khandbl','lichxg','srtavodka','pakito0o0','kukitow','janter','vodkaah','bricenhox','polli','lukitasgg','rodrizs1','marianno181','claraleans','mgl-3113','cobraadlzr','elcharlito','nanuchoo','sic0-o','zetauno','wizzyts','fackens','nahu8928','srmomex','llicha','leyespa','nosoygomy'];
+const SERVER = window.location.origin;
+let liveData = [];
 let hiddenSet = new Set();
-let order     = [];
+let order = [];
 
-// ── Show/hide states ───────────────────────────────────────────────────────
-function show(id) {
-  ['sLoading','sOffline','sGrid'].forEach(s => {
-    const el = document.getElementById(s);
-    el.style.display = s === id ? (s === 'sGrid' ? 'grid' : 'flex') : 'none';
+function mountPlayer(channel) {
+  const cp = document.getElementById(`cp-${channel}`);
+  if (!cp) return;
+  const params = `muted=true&autoplay=true&hide_info=true&pip=false&opentokick=false`;
+  cp.innerHTML = `<iframe src="https://player.kick.cx/${channel}?${params}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+}
+
+function addStream() {
+  const input = document.getElementById('addInput');
+  const user = input.value.trim().toLowerCase();
+  if (!user) return;
+  if (!CHANNELS.includes(user)) CHANNELS.push(user);
+  input.value = '';
+  init();
+}
+
+function toggleChat() {
+  const side = document.getElementById('sidebar');
+  const isOpen = side.classList.toggle('open');
+  
+  if (isOpen) {
+    updateChatSelect();
+    const select = document.getElementById('chatSelect');
+    if (!select.value && select.options.length > 1) {
+      select.selectedIndex = 1;
+      loadChat(select.value);
+    }
+  }
+  setTimeout(applyGrid, 310);
+}
+
+function loadChat(channel) {
+  const frame = document.getElementById('chatFrame');
+  if (!channel) { frame.innerHTML = ''; return; }
+  frame.innerHTML = `<iframe src="https://kick.com/popout/${channel}/chat?readonly=true"></iframe>`;
+}
+
+function updateChatSelect() {
+  const select = document.getElementById('chatSelect');
+  const current = select.value;
+  select.innerHTML = '<option value="">-- Seleccionar --</option>';
+  order.forEach(ch => {
+    const opt = document.createElement('option');
+    opt.value = ch;
+    opt.textContent = ch.toUpperCase();
+    if (ch === current) opt.selected = true;
+    select.appendChild(opt);
   });
 }
 
-// ── Grid layout dinámico ──────────────────────────────────────────────────
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.error(`Error: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+async function fetchLive() {
+  try {
+    const res = await fetch(`${SERVER}/api/live?channels=${CHANNELS.join(',')}`);
+    return await res.json();
+  } catch(e) { return []; }
+}
+
 function applyGrid() {
+  const container = document.getElementById('sGrid');
   const visible = order.filter(ch => !hiddenSet.has(ch));
   const n = visible.length;
-  const g = document.getElementById('sGrid');
+  if (n === 0) return;
 
-  if (n === 0) { show('sOffline'); return; }
-  show('sGrid');
+  const gap = 8;
+  const winW = container.clientWidth - 20;
+  const winH = container.clientHeight - 20;
 
-  const GAP   = 5;
-  const CH    = 26;   // cell header height
-  const W     = window.innerWidth  - GAP;
-  const H     = window.innerHeight - 38 - GAP; // 38 = main header
-  const RATIO = 16 / 9;
-
-  // Encontrar cols y rows que maximicen el área de cada celda
-  // cubriendo toda la pantalla sin overflow
-  let bestCols = 1, bestRows = n, bestCellW = 0, bestCellH = 0;
-
+  let bestW = 0;
   for (let cols = 1; cols <= n; cols++) {
     const rows = Math.ceil(n / cols);
-
-    // Calcular tamaño de celda limitado por ancho
-    const cellWbyW = (W - GAP * (cols - 1)) / cols;
-    const cellHbyW = cellWbyW / RATIO + CH;
-
-    // Calcular tamaño de celda limitado por alto
-    const cellHbyH = (H - GAP * (rows - 1)) / rows;
-    const cellWbyH = (cellHbyH - CH) * RATIO;
-
-    // Usar el menor de los dos para que entre en pantalla
-    const cellW = Math.min(cellWbyW, cellWbyH);
-    const cellH = cellW / RATIO + CH;
-
-    if (cellW <= 0 || cellH <= CH) continue;
-
-    // Maximizar área total usada
-    const area = cellW * cellH * n;
-    if (area > bestCellW * bestCellH * n) {
-      bestCols  = cols;
-      bestRows  = rows;
-      bestCellW = cellW;
-      bestCellH = cellH;
-    }
+    const maxWidth = (winW - (cols - 1) * gap) / cols;
+    const maxHeight = (winH - (rows - 1) * gap) / rows;
+    let w = Math.min(maxWidth, maxHeight * (16/9));
+    if (w > bestW) bestW = w;
   }
 
-  const cellW = Math.floor(bestCellW);
-  const cellH = Math.floor(bestCellH);
-
-  g.style.display             = 'grid';
-  g.style.gridTemplateColumns = `repeat(${bestCols}, ${cellW}px)`;
-  g.style.gridTemplateRows    = `repeat(${bestRows}, ${cellH}px)`;
-  g.style.gap                 = `${GAP}px`;
-  g.style.width               = `${bestCols * cellW + GAP * (bestCols - 1)}px`;
-  g.style.height              = `${bestRows * cellH + GAP * (bestRows - 1)}px`;
-  g.style.alignContent        = 'center';
-  g.style.justifyContent      = 'center';
-
-  document.querySelectorAll('.cell:not(.hidden)').forEach(cell => {
-    cell.style.width  = cellW + 'px';
-    cell.style.height = cellH + 'px';
+  const finalW = Math.floor(bestW);
+  visible.forEach(ch => {
+    const el = document.getElementById(`cell-${ch}`);
+    if (el) el.style.width = `${finalW}px`;
   });
 }
 
-window.addEventListener('resize', applyGrid);
-
-// ── Fetch with retry ───────────────────────────────────────────────────────
-async function fetchLive() {
-  const txt = document.getElementById('sLoadingText');
-  for (let i = 0; i < 6; i++) {
-    try {
-      if (i > 0) txt.textContent = `Reintentando… (${i}/5)`;
-      const res = await fetch(`${SERVER}/api/live?channels=${CHANNELS.join(',')}`, { signal: AbortSignal.timeout(10000) });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      if (data.length === 0 && i < 2) {
-        txt.textContent = 'Verificando…';
-        await new Promise(r => setTimeout(r, 2000));
-        continue;
-      }
-      txt.textContent = 'Chequeando quién está en vivo…';
-      return data;
-    } catch(e) {
-      if (i < 5) {
-        const wait = Math.min(2000 * (i + 1), 8000);
-        txt.textContent = `Reconectando en ${wait/1000}s…`;
-        await new Promise(r => setTimeout(r, wait));
-      }
-    }
-  }
-  return [];
-}
-
-// ── Init ───────────────────────────────────────────────────────────────────
 async function init() {
-  show('sLoading');
-  const newData = await fetchLive();
-  const newChs  = newData.map(d => d.channel);
-
-  // Remove cells no longer live
-  liveData.forEach(({channel}) => {
-    if (!newChs.includes(channel))
-      document.getElementById(`cell-${channel}`)?.remove();
-  });
-  liveData = newData;
+  const data = await fetchLive();
+  const newChs = data.map(d => d.channel);
+  liveData.forEach(d => { if(!newChs.includes(d.channel)) document.getElementById(`cell-${d.channel}`)?.remove(); });
+  liveData = data;
   order = [...order.filter(ch => newChs.includes(ch)), ...newChs.filter(ch => !order.includes(ch))];
-
   document.getElementById('liveNum').textContent = liveData.length;
-
-  if (!liveData.length) { show('sOffline'); return; }
-
   renderCells();
   applyGrid();
   updateHiddenBtn();
-
-  clearTimeout(window._rt);
-  window._rt = setTimeout(init, 2 * 60 * 1000);
+  updateChatSelect();
 }
 
-function refresh() { clearTimeout(window._rt); init(); }
-
-// ── Render ─────────────────────────────────────────────────────────────────
 function renderCells() {
   const grid = document.getElementById('sGrid');
-  liveData.forEach(({channel, viewers}) => {
+  liveData.forEach(({channel}) => {
     if (document.getElementById(`cell-${channel}`)) return;
-
     const cell = document.createElement('div');
-    cell.className = 'cell' + (hiddenSet.has(channel) ? ' hidden' : '');
+    cell.className = 'cell';
     cell.id = `cell-${channel}`;
     cell.dataset.ch = channel;
-    cell.draggable = true;
-
-    cell.innerHTML = `
-      <div class="cp" id="cp-${channel}">
-        <iframe
-          src="https://player.kick.com/${channel}?autoplay=true&muted=true"
-          allowfullscreen
-          allow="autoplay; fullscreen; encrypted-media"
-          scrolling="no">
-        </iframe>
-      </div>
-      <div class="ch">
-        <span class="ch-drag" title="Arrastrar">⠿</span>
-        <div class="ch-live"></div>
-        <span class="ch-name">${channel.toUpperCase()}</span>
-        <button class="ch-btn red" onclick="hideOne('${channel}')" title="Ocultar">👁</button>
-      </div>`;
-
+    cell.innerHTML = `<div class="ch"><button class="ch-btn" onclick="hideOne('${channel}')">✕</button></div><div class="cp" id="cp-${channel}"></div>`;
     grid.appendChild(cell);
-    setupDrag(cell);
+    mountPlayer(channel);
   });
-
-  reorder();
 }
 
-// ── Actions ────────────────────────────────────────────────────────────────
 function hideOne(ch) {
   hiddenSet.add(ch);
-  const cell = document.getElementById(`cell-${ch}`);
-  if (cell) {
-    // Destruir iframe para detener reproducción y ahorrar ancho de banda
-    const cp = document.getElementById(`cp-${ch}`);
-    if (cp) cp.innerHTML = '';
-    cell.classList.add('hidden');
-  }
+  document.getElementById(`cell-${ch}`).classList.add('hidden');
+  document.getElementById(`cp-${ch}`).innerHTML = '';
   applyGrid();
   updateHiddenBtn();
 }
 
 function showOne(ch) {
   hiddenSet.delete(ch);
-  const cell = document.getElementById(`cell-${ch}`);
-  if (cell) {
-    // Recrear iframe al mostrar
-    const cp = document.getElementById(`cp-${ch}`);
-    if (cp && !cp.querySelector('iframe')) {
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://player.kick.com/${ch}?autoplay=true&muted=true`;
-      iframe.setAttribute('allowfullscreen', '');
-      iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media');
-      iframe.setAttribute('scrolling', 'no');
-      cp.appendChild(iframe);
-    }
-    cell.classList.remove('hidden');
-  }
+  document.getElementById(`cell-${ch}`).classList.remove('hidden');
+  mountPlayer(ch);
   applyGrid();
   updateHiddenBtn();
-  document.getElementById('hiddenDrop').style.display = 'none';
 }
 
 function updateHiddenBtn() {
@@ -428,68 +304,17 @@ function toggleHiddenDrop() {
   [...hiddenSet].forEach(ch => {
     const row = document.createElement('div');
     row.className = 'hd-row';
-    row.innerHTML = `<span style="font-size:0.75rem;color:#556">👁</span><span class="hd-name">${ch.toUpperCase()}</span>`;
-    row.onclick = () => showOne(ch);
+    row.innerHTML = `<span class="hd-name">${ch.toUpperCase()}</span><span style="color:var(--blue); font-weight:bold">+</span>`;
+    row.onclick = () => { showOne(ch); drop.style.display = 'none'; };
     drop.appendChild(row);
   });
   drop.style.display = 'block';
 }
 
-document.addEventListener('click', e => {
-  const drop = document.getElementById('hiddenDrop');
-  const btn  = document.getElementById('hiddenBtn');
-  if (!drop.contains(e.target) && !btn.contains(e.target))
-    drop.style.display = 'none';
-});
-
-// ── Drag & drop ────────────────────────────────────────────────────────────
-let dragSrc = null;
-
-function setupDrag(cell) {
-  cell.addEventListener('dragstart', e => {
-    dragSrc = cell;
-    cell.classList.add('drag-src');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', cell.dataset.ch);
-  });
-  cell.addEventListener('dragend', () => {
-    cell.classList.remove('drag-src');
-    document.querySelectorAll('.cell').forEach(c => c.classList.remove('drag-ovr'));
-    dragSrc = null;
-  });
-  cell.addEventListener('dragover', e => {
-    e.preventDefault();
-    if (dragSrc && dragSrc !== cell) cell.classList.add('drag-ovr');
-  });
-  cell.addEventListener('dragleave', () => cell.classList.remove('drag-ovr'));
-  cell.addEventListener('drop', e => {
-    e.preventDefault();
-    cell.classList.remove('drag-ovr');
-    if (!dragSrc || dragSrc === cell) return;
-    const si = order.indexOf(dragSrc.dataset.ch);
-    const di = order.indexOf(cell.dataset.ch);
-    if (si < 0 || di < 0) return;
-    [order[si], order[di]] = [order[di], order[si]];
-    reorder();
-    applyGrid();
-  });
-}
-
-function reorder() {
-  const g = document.getElementById('sGrid');
-  order.forEach(ch => {
-    const cell = document.getElementById(`cell-${ch}`);
-    if (cell) g.appendChild(cell);
-  });
-}
-
-// ── Keepalive (Railway) ────────────────────────────────────────────────────
-setInterval(async () => {
-  try { await fetch(`${SERVER}/`, { signal: AbortSignal.timeout(5000) }); }
-  catch(e) {}
-}, 4 * 60 * 1000);
-
+function refresh() { init(); }
+window.addEventListener('resize', applyGrid);
 init();
+setInterval(init, 60000); 
 </script>
 </body>
 </html>
